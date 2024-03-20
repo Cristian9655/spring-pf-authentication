@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:oracle:${DB_HOMOLOG_SERVER:thin:@oracle.fiap.com.br}:${DB_HOMOLOG_PORT:1521}:${DB_HOMOLOG_NAME:ORCL}
+    username: ${DB_HOMOLOG_USERNAME:rm550509}
+    password: ${DB_HOMOLOG_PASSWORD:050404}
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    open-in-view: true
+    hibernate:
+      ddl-auto: update
