@@ -7,10 +7,14 @@ import br.com.fiap.springpfauthentication.entity.Pessoa;
 import br.com.fiap.springpfauthentication.entity.Usuario;
 import br.com.fiap.springpfauthentication.repository.UsuarioRepository;
 import br.com.fiap.springpfauthentication.service.UsuarioService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,9 +42,18 @@ public class UsuarioResource {
 
     @Transactional
     @PostMapping
-    public UsuarioResponse save(@RequestBody UsuarioRequest u) {
+    public ResponseEntity<UsuarioResponse> save(@RequestBody UsuarioRequest u) {
         if (Objects.isNull(u.pessoa())) return null;
-        return service.toResponse(repo.save(service.toEntity(u)));
+
+        Usuario entity = service.toEntity(u);
+
+        Usuario salve = repo.save(entity);
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+
+        UsuarioResponse body = service.toResponse(repo.save(service.toEntity(u)));
+
+        return ResponseEntity.created(uri).body(body);
     }
 
 
